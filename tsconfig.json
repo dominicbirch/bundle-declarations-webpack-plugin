@@ -1,0 +1,28 @@
+{
+    "include": [
+        "src/**/*.*"
+    ],
+    "exclude": [
+        "./webpack.config.ts"
+    ],
+    "compileOnSave": true,
+    "compilerOptions": {
+        "lib": [
+            "DOM",
+            "ES5",
+            "ES6",
+            "ES2015"
+        ],
+        "baseUrl": "./src/",
+        "rootDir": "./src/",
+        "outDir": "./lib/",
+        "jsx": "react",
+        "declaration": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "moduleResolution": "Node",
+        // "target": "ESNext",
+        // "module": "ESNext"
+    }
+}

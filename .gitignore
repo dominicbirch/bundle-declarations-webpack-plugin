@@ -1,0 +1,5 @@
+lib/
+dist/
+bin/
+node_modules/
+*.tgz

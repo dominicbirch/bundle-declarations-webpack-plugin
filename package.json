@@ -1,0 +1,40 @@
+{
+  "name": "combine-definitions-webpack-plugin",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle/",
+  "main": "./lib/index.js",
+  "module": "./lib/",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dominic Birch <dominicbirch@outlook.com> https://github.com/dominicbirch",
+  "homepage": "https://github.com/dominicbirch/combine-definitions-webpack-plugin/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dominicbirch/combine-definitions-webpack-plugin.git"
+  },
+  "keywords": [
+    "webpack",
+    "typescript",
+    "plugin",
+    ".d.ts",
+    "definitions",
+    "typings"
+  ],
+  "devDependencies": {
+    "@types/dts-bundle": "0.0.31",
+    "@types/webpack": "^4.41.21",
+    "clean-webpack-plugin": "^3.0.0",
+    "ts-loader": "^8.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "dts-bundle": "^0.7.3"
+  }
+}
