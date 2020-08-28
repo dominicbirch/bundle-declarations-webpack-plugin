@@ -16,3 +16,5 @@ import CombineDefinitionsWebpackPlugin from "combine-definitions-webpack-plugin"
         })
     ]
 ```
+
+> The source code for this package also uses the middleware, so this can be used as a demonstration ¯\\\_(ツ)\_/¯
