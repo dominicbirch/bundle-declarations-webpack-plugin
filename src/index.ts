@@ -1,8 +1,8 @@
 import { Options } from "dts-bundle";
 import { Compiler } from "webpack";
 
-
-class CombineDefinitionsWebpackPlugin {
+/**Creates a bundled d.ts file from the entry point provided after webpack emits output. */
+class CombineDeclarationsWebpackPlugin {
     constructor(readonly options: Options) {
     }
 
@@ -15,4 +15,4 @@ class CombineDefinitionsWebpackPlugin {
 }
 
 
-export { CombineDefinitionsWebpackPlugin, CombineDefinitionsWebpackPlugin as default };
+export { CombineDeclarationsWebpackPlugin, CombineDeclarationsWebpackPlugin as default };

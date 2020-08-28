@@ -1,13 +1,13 @@
 # Example usage
 
 ```typescript
-import CombineDefinitionsWebpackPlugin from "combine-definitions-webpack-plugin"
+import CombineDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin"
 
 ...
 
     plugins: [
         ...
-        new CombineDefinitionsWebpackPlugin({
+        new CombineDeclarationsWebpackPlugin({
             name: require("package.json")["name"],
             main: "./dist/index.d.ts",
             out: "./dist/index.d.ts",

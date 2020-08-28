@@ -1,7 +1,7 @@
 {
-  "name": "combine-declarations-webpack-plugin",
+  "name": "bundle-declarations-webpack-plugin",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle/",
   "main": "./lib/index.js",
   "module": "./lib/",
@@ -10,11 +10,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dominic Birch <dominicbirch@outlook.com> https://github.com/dominicbirch",
-  "homepage": "https://github.com/dominicbirch/combine-declarations-webpack-plugin/",
+  "homepage": "https://github.com/dominicbirch/bundle-declarations-webpack-plugin/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dominicbirch/combine-declarations-webpack-plugin.git"
+    "url": "https://github.com/dominicbirch/bundle-declarations-webpack-plugin.git"
   },
   "keywords": [
     "webpack",
@@ -23,7 +23,8 @@
     ".d.ts",
     "declarations",
     "typings",
-    "dts-bundle"
+    "dts-bundle",
+    "combine declarations"
   ],
   "devDependencies": {
     "@types/dts-bundle": "0.0.31",
