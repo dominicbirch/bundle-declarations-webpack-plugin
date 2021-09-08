@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import { resolve, join } from "path";
+import { resolve } from "path";
 import BundleDeclarationsWebpackPlugin from "./src";
 
 const
@@ -44,15 +44,13 @@ export default <webpack.Configuration>{
             amd: 'lodash',
             root: '_',
         },
-        "dts-bundle": "dts-bundle"
+        webpack: "webpack",
+        "dts-bundle-generator": "dts-bundle-generator"
     },
     plugins: [
         new BundleDeclarationsWebpackPlugin({
-            name: packageName,
-            main: join(outDir, "index.d.ts"),
-            out: join(outDir, "index.d.ts"),
-            removeSource: true,
-            outputAsModuleFolder: true
+            entry: "./src/index.ts",
+            outFile: "index.d.ts"
         })
     ],
     optimization: {

@@ -14,31 +14,9 @@
         "rootDir": "./src/",
         "outDir": "./lib/",
         "jsx": "react",
-        "declaration": true,
         "strict": true,
         "noImplicitAny": true,
         "noImplicitThis": true,
         "moduleResolution": "Node"
-    },
-    "ts-node": {
-        "include": [
-            "**/*.*"
-        ],
-        "compileOnSave": true,
-        "compilerOptions": {
-            "lib": [
-                "ES5",
-                "ES6",
-                "ESNext"
-            ],
-            "moduleResolution": "Node",
-            "baseUrl": "./",
-            "rootDir": "./",
-            "outDir": "./",
-            "declaration": false,
-            "strict": true,
-            "noImplicitAny": true,
-            "noImplicitThis": true,
-        }
     }
 }
