@@ -1,6 +1,5 @@
 import * as webpack from "webpack";
 import { resolve, join } from "path";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import CombineDefinitionsWebpackPlugin from "./src";
 
 const
@@ -17,7 +16,8 @@ export default <webpack.Configuration>{
         publicPath: "/",
         library: packageName,
         libraryTarget: "umd",
-        umdNamedDefine: true
+        umdNamedDefine: true,
+        clean: true
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -31,23 +31,22 @@ export default <webpack.Configuration>{
                 use: {
                     loader: "ts-loader",
                     options: {
-                        onlyCompileBundledFiles: true,
-                        configFile: resolve("./tsconfig.json")
+                        onlyCompileBundledFiles: true
                     }
                 }
             }
         ]
     },
-    externals: ["dts-bundle"],
+    externals: {
+        lodash: {
+            commonjs: 'lodash',
+            commonjs2: 'lodash',
+            amd: 'lodash',
+            root: '_',
+        },
+        "dts-bundle": "dts-bundle"
+    },
     plugins: [
-        new CleanWebpackPlugin({
-            dry: false,
-            protectWebpackAssets: true,
-            cleanStaleWebpackAssets: true,
-            cleanOnceBeforeBuildPatterns: [
-                resolve("./lib/**/*.*")
-            ]
-        }),
         new CombineDefinitionsWebpackPlugin({
             name: packageName,
             main: join(outDir, "index.d.ts"),
@@ -55,5 +54,8 @@ export default <webpack.Configuration>{
             removeSource: true,
             outputAsModuleFolder: true
         })
-    ]
+    ],
+    optimization: {
+        usedExports: true
+    }
 };

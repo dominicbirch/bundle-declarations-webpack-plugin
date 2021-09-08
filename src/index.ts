@@ -1,13 +1,15 @@
 import { Options } from "dts-bundle";
-import { Compiler } from "webpack";
+import { Compiler, WebpackPluginInstance } from "webpack";
+
+const PluginName = "bundle-declarations-webpack-plugin";
 
 /**Creates a bundled d.ts file from the entry point provided after webpack emits output. */
-class CombineDeclarationsWebpackPlugin {
+export class CombineDeclarationsWebpackPlugin implements WebpackPluginInstance {
     constructor(readonly options: Options) {
     }
 
     public apply(compiler: Compiler) {
-        compiler.hooks.afterEmit.tapPromise("CombineDefinitionsWebpackPlugin", async () => {
+        compiler.hooks.afterEmit.tapPromise(PluginName, async () => {
             const dts = await import("dts-bundle");
             dts.bundle(this.options);
         });
@@ -15,4 +17,7 @@ class CombineDeclarationsWebpackPlugin {
 }
 
 
-export { CombineDeclarationsWebpackPlugin, CombineDeclarationsWebpackPlugin as default };
+export { 
+    Options,
+    CombineDeclarationsWebpackPlugin as default 
+};

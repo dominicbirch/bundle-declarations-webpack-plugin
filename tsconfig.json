@@ -2,16 +2,13 @@
     "include": [
         "src/**/*.*"
     ],
-    "exclude": [
-        "./webpack.config.ts"
-    ],
-    "compileOnSave": true,
     "compilerOptions": {
         "lib": [
             "DOM",
+            "DOM.Iterable",
             "ES5",
             "ES6",
-            "ES2015"
+            "ESNext"
         ],
         "baseUrl": "./src/",
         "rootDir": "./src/",
@@ -21,8 +18,27 @@
         "strict": true,
         "noImplicitAny": true,
         "noImplicitThis": true,
-        "moduleResolution": "Node",
-        // "target": "ESNext",
-        // "module": "ESNext"
+        "moduleResolution": "Node"
+    },
+    "ts-node": {
+        "include": [
+            "**/*.*"
+        ],
+        "compileOnSave": true,
+        "compilerOptions": {
+            "lib": [
+                "ES5",
+                "ES6",
+                "ESNext"
+            ],
+            "moduleResolution": "Node",
+            "baseUrl": "./",
+            "rootDir": "./",
+            "outDir": "./",
+            "declaration": false,
+            "strict": true,
+            "noImplicitAny": true,
+            "noImplicitThis": true,
+        }
     }
 }

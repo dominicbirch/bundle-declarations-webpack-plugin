@@ -1,13 +1,13 @@
 {
   "name": "bundle-declarations-webpack-plugin",
-  "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle/",
   "main": "./lib/index.js",
-  "module": "./lib/",
+  "module": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "webpack"
   },
   "author": "Dominic Birch <dominicbirch@outlook.com> https://github.com/dominicbirch",
   "homepage": "https://github.com/dominicbirch/bundle-declarations-webpack-plugin/",
@@ -26,17 +26,19 @@
     "dts-bundle",
     "combine declarations"
   ],
-  "devDependencies": {
-    "@types/dts-bundle": "0.0.31",
-    "@types/webpack": "^4.41.21",
-    "clean-webpack-plugin": "^3.0.0",
-    "ts-loader": "^8.0.2",
-    "ts-node": "^8.10.2",
-    "typescript": "^4.0.2",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
-  },
   "dependencies": {
     "dts-bundle": "^0.7.3"
+  },
+  "devDependencies": {
+    "@types/dts-bundle": "0.0.31",
+    "ts-loader": "^9.2.5",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2",
+    "webpack": "^5.52.0",
+    "webpack-cli": "^4.8.0"
+  },
+  "peerDependencies": {
+    "lodash": "^4.17.21",
+    "webpack": "^5.0.0"
   }
 }
