@@ -4,7 +4,7 @@ import { Compiler, WebpackPluginInstance } from "webpack";
 const PluginName = "bundle-declarations-webpack-plugin";
 
 /**Creates a bundled d.ts file from the entry point provided after webpack emits output. */
-export class CombineDeclarationsWebpackPlugin implements WebpackPluginInstance {
+export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
     constructor(readonly options: Options) {
     }
 
@@ -19,5 +19,5 @@ export class CombineDeclarationsWebpackPlugin implements WebpackPluginInstance {
 
 export { 
     Options,
-    CombineDeclarationsWebpackPlugin as default 
+    BundleDeclarationsWebpackPlugin as default 
 };

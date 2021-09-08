@@ -1,6 +1,6 @@
 import * as webpack from "webpack";
 import { resolve, join } from "path";
-import CombineDefinitionsWebpackPlugin from "./src";
+import BundleDeclarationsWebpackPlugin from "./src";
 
 const
     { name: packageName } = require("./package.json"),
@@ -47,7 +47,7 @@ export default <webpack.Configuration>{
         "dts-bundle": "dts-bundle"
     },
     plugins: [
-        new CombineDefinitionsWebpackPlugin({
+        new BundleDeclarationsWebpackPlugin({
             name: packageName,
             main: join(outDir, "index.d.ts"),
             out: join(outDir, "index.d.ts"),
