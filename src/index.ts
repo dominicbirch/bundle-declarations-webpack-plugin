@@ -8,6 +8,7 @@ export interface Options {
 
     outFile?: string;
     compilationOptions?: CompilationOptions;
+    removeEmptyLines?: boolean;
 }
 
 export const DefaultEntryOptions = <Partial<EntryPointConfig>>{
@@ -17,10 +18,15 @@ export const DefaultEntryOptions = <Partial<EntryPointConfig>>{
     }
 };
 
+const
+    emptyOrInvalidExports = /^export\s+(?:{\s*};?\s*|\*.*?\bfrom\b.*?)$/gmi,
+    emptyLines = /^\s*?[\r\n]+/gmi;
+
 /**Creates a bundled d.ts file from the entry point provided after webpack emits output. */
 export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
     static defaultOptions: Partial<Options> = {
-        outFile: "index.d.ts"
+        outFile: "index.d.ts",
+        removeEmptyLines: true
     };
 
     constructor(readonly options: Options) {
@@ -36,28 +42,31 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
 
         compiler.hooks.thisCompilation.tap(pluginName, (compilation, params) =>
             compilation.hooks.processAssets.tapPromise({ name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE }, async assets => {
-                if (!this.options.entry) {
+                const { entry, compilationOptions, removeEmptyLines, outFile } = this.options;
+
+                if (!entry) {
                     compilation.logger.warn("No options were provided, declaration bundling will be skipped");
                     return;
                 }
 
                 let entries: EntryPointConfig[];
-                if (typeof this.options.entry === "string") {
-                    entries = [{ ...DefaultEntryOptions, filePath: this.options.entry }];
-                } else if (Array.isArray(this.options.entry)) {
-                    entries = this.options.entry.map(e => typeof e === "string" ? { ...DefaultEntryOptions, filePath: e } : { ...DefaultEntryOptions, ...e });
+                if (typeof entry === "string") {
+                    entries = [{ ...DefaultEntryOptions, filePath: entry }];
+                } else if (Array.isArray(entry)) {
+                    entries = entry.map(e => typeof e === "string" ? { ...DefaultEntryOptions, filePath: e } : { ...DefaultEntryOptions, ...e });
                 } else {
-                    entries = [{ ...DefaultEntryOptions, ...<EntryPointConfig>this.options.entry }];
+                    entries = [{ ...DefaultEntryOptions, ...<EntryPointConfig>entry }];
                 }
 
                 const
-                    dtsLines = generateDtsBundle(entries, this.options.compilationOptions),
+                    dtsLines = generateDtsBundle(entries, compilationOptions),
                     source = dtsLines
                         // The following is to remove empty exports, and also broken re-exporting (dts-bundle-generator seems to generate all exports but leaves behind the export *)
-                        .map(dts => dts?.replace(/^export\s+(?:{\s*};?\s*|\*.*?\bfrom\b.*?)$/gmi, ""))
+                        .map(dts => dts?.replace(emptyOrInvalidExports, ""))
+                        .map(dts => removeEmptyLines ? dts?.replace(emptyLines, "")?.trim() : dts)
                         .join(EOL);
 
-                compilation.emitAsset(<string>this.options.outFile, new RawSource(source));
+                compilation.emitAsset(<string>outFile, new RawSource(source));
             })
         );
     }
