@@ -52,7 +52,10 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
 
                 const
                     dtsLines = generateDtsBundle(entries, this.options.compilationOptions),
-                    source = dtsLines.join(EOL);
+                    source = dtsLines
+                        //NOTE: this is to remove the empty export { }; and the unnecessary export * from "..." which the library seems to leave behind
+                        .filter(x => !/^export\s+(?:{\s*};?|\*.*?\bfrom\b.*?)$/i.test(x))
+                        .join(EOL);
 
                 compilation.emitAsset(<string>this.options.outFile, new RawSource(source));
             })
