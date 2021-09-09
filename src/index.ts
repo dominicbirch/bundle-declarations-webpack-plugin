@@ -53,8 +53,8 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
                 const
                     dtsLines = generateDtsBundle(entries, this.options.compilationOptions),
                     source = dtsLines
-                        //NOTE: this is to remove the empty export { }; and the unnecessary export * from "..." which the library seems to leave behind
-                        .filter(x => !/^export\s+(?:{\s*};?|\*.*?\bfrom\b.*?)$/i.test(x))
+                        // The following is to remove empty exports, and also broken re-exporting (dts-bundle-generator seems to generate all exports but leaves behind the export *)
+                        .map(dts => dts?.replace(/^export\s+(?:{\s*};?\s*|\*.*?\bfrom\b.*?)$/gmi, ""))
                         .join(EOL);
 
                 compilation.emitAsset(<string>this.options.outFile, new RawSource(source));
