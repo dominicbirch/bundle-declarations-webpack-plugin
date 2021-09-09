@@ -9,6 +9,8 @@ export interface Options {
     outFile?: string;
     compilationOptions?: CompilationOptions;
     removeEmptyLines?: boolean;
+    removeEmptyExports?: boolean;
+    removeRelativeReExport?: boolean;
 }
 
 export const DefaultEntryOptions = <Partial<EntryPointConfig>>{
@@ -19,14 +21,16 @@ export const DefaultEntryOptions = <Partial<EntryPointConfig>>{
 };
 
 const
-    emptyOrInvalidExports = /^export\s+(?:{\s*};?\s*|\*.*?\bfrom\b.*?)$/gmi,
+    emptyExports = /^export\s+{\s*};?\s*$/gmi,
+    relativeReExport = /^export\s+\*.*?\bfrom\s+"[\.~\/].*$/gmi,
     emptyLines = /^\s*?[\r\n]+/gmi;
 
 /**Creates a bundled d.ts file from the entry point provided after webpack emits output. */
 export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
     static defaultOptions: Partial<Options> = {
         outFile: "index.d.ts",
-        removeEmptyLines: true
+        removeEmptyLines: true,
+        removeEmptyExports: true
     };
 
     constructor(readonly options: Options) {
@@ -42,7 +46,7 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
 
         compiler.hooks.thisCompilation.tap(pluginName, (compilation, params) =>
             compilation.hooks.processAssets.tapPromise({ name: pluginName, stage: Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE }, async assets => {
-                const { entry, compilationOptions, removeEmptyLines, outFile } = this.options;
+                const { entry, compilationOptions, outFile, removeEmptyExports, removeEmptyLines, removeRelativeReExport } = this.options;
 
                 if (!entry) {
                     compilation.logger.warn("No options were provided, declaration bundling will be skipped");
@@ -61,9 +65,9 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
                 const
                     dtsLines = generateDtsBundle(entries, compilationOptions),
                     source = dtsLines
-                        // The following is to remove empty exports, and also broken re-exporting (dts-bundle-generator seems to generate all exports but leaves behind the export *)
-                        .map(dts => dts?.replace(emptyOrInvalidExports, ""))
-                        .map(dts => removeEmptyLines ? dts?.replace(emptyLines, "")?.trim() : dts)
+                        .map(dts => removeEmptyExports ? dts?.replace(emptyExports, "") : dts) // export {};
+                        .map(dts => removeRelativeReExport ? dts?.replace(relativeReExport, "") : dts) // export * from "./hooks", export * as hooks from "./hooks";
+                        .map(dts => removeEmptyLines ? dts?.replace(emptyLines, "")?.trim() : dts) 
                         .join(EOL);
 
                 compilation.emitAsset(<string>outFile, new RawSource(source));
