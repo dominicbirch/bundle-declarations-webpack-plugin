@@ -1,4 +1,5 @@
-# Example usage
+# bundle-declarations-webpack-plugin ![NPM version](https://badge.fury.io/js/bundle-declarations-webpack-plugin.svg)
+## Example usage
 
 ```typescript
 import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin"
