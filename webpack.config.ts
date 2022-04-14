@@ -16,6 +16,7 @@ export default <webpack.Configuration>{
         publicPath: "/",
         library: packageName,
         libraryTarget: "umd",
+        libraryExport: "default",
         umdNamedDefine: true,
         clean: true
     },
