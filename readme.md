@@ -11,6 +11,18 @@ import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin"
             entry: "./src/index.ts",
             outFile: "index.d.ts",
         }),
+        // ... or to control dependency type handling
+        new BundleDeclarationsWebpackPlugin({
+            entry: {
+                filePath: "./src/index.ts",
+                libraries: {
+                    inlinedLibraries: [
+                        "tsyringe",
+                    ],
+                },
+            },
+            outFile: "index.d.ts",
+        }),
     ]
 ```
 
