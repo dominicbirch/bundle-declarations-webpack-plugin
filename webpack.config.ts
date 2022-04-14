@@ -31,7 +31,7 @@ export default <webpack.Configuration>{
                 use: {
                     loader: "ts-loader",
                     options: {
-                        onlyCompileBundledFiles: true
+                        onlyCompileBundledFiles: true,
                     }
                 }
             }
@@ -45,13 +45,13 @@ export default <webpack.Configuration>{
             root: '_',
         },
         webpack: "webpack",
-        "dts-bundle-generator": "dts-bundle-generator"
+        "dts-bundle-generator": "dts-bundle-generator",
     },
     plugins: [
         new BundleDeclarationsWebpackPlugin({
             entry: "./src/index.ts",
             outFile: "index.d.ts"
-        })
+        }),
     ],
     optimization: {
         usedExports: true

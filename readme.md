@@ -9,8 +9,8 @@ import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin"
     plugins: [
         new BundleDeclarationsWebpackPlugin({
             entry: "./src/index.ts",
-            outFile: "index.d.ts"
-        })
+            outFile: "index.d.ts",
+        }),
     ]
 ```
 
