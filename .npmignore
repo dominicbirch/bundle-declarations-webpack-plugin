@@ -8,3 +8,4 @@ src/
 .npmignore
 coverage/
 .eslintcache
+.github/

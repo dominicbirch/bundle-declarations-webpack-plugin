@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="0" failures="0" errors="0" time="1.247">
+  <testsuite name="BundleDeclarationsWebpackPlugin" errors="0" failures="0" skipped="0" timestamp="2022-05-09T15:52:49" time="1.109" tests="0">
+    <testcase classname="BundleDeclarationsWebpackPlugin applies the default options" name="BundleDeclarationsWebpackPlugin applies the default options" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin supports overriding default options" name="BundleDeclarationsWebpackPlugin supports overriding default options" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin hooks processAssets for each compilation" name="BundleDeclarationsWebpackPlugin hooks processAssets for each compilation" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for a single string entry-point" name="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for a single string entry-point" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for multiple string entry-points" name="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for multiple string entry-points" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for a single EntryPointConfig" name="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for a single EntryPointConfig" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for an array of EntryPointConfigs" name="BundleDeclarationsWebpackPlugin generates a .d.ts bundle for an array of EntryPointConfigs" time="0">
+    </testcase>
+    <testcase classname="BundleDeclarationsWebpackPlugin emits the configured outFile as an asset" name="BundleDeclarationsWebpackPlugin emits the configured outFile as an asset" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

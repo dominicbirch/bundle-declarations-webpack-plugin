@@ -80,4 +80,4 @@ export class BundleDeclarationsWebpackPlugin implements WebpackPluginInstance {
 export {
     BundleDeclarationsWebpackPlugin as default
 };
-export { EntryPointConfig, CompilationOptions } from "dts-bundle-generator";
+export type { EntryPointConfig, CompilationOptions } from "dts-bundle-generator";

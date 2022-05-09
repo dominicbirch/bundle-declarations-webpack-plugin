@@ -2,6 +2,7 @@ lib/
 dist/
 bin/
 node_modules/
+coverage/
 *.tgz
 package-lock.json
 yarn.lock
