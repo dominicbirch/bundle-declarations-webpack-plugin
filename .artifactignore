@@ -6,4 +6,3 @@ src/
 /*.tgz
 .artifactignore
 .npmignore
-coverage/

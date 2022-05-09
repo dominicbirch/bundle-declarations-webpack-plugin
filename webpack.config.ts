@@ -18,7 +18,7 @@ export default <webpack.Configuration>{
         libraryTarget: "umd",
         libraryExport: "default",
         umdNamedDefine: true,
-        clean: true
+        clean: true,
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -27,14 +27,15 @@ export default <webpack.Configuration>{
     module: {
         rules: [
             {
-                test: /\.[tj]sx?$/i,
+                test: /\.[tj]s$/i,
                 include: resolve("./src"),
+                exclude: /\.test\.[tj]s$/i,
                 use: {
                     loader: "ts-loader",
                     options: {
                         onlyCompileBundledFiles: true,
-                    }
-                }
+                    },
+                },
             }
         ]
     },
@@ -55,6 +56,6 @@ export default <webpack.Configuration>{
         }),
     ],
     optimization: {
-        usedExports: true
-    }
+        usedExports: true,
+    },
 };
