@@ -1,4 +1,10 @@
-# bundle-declarations-webpack-plugin ![NPM version](https://badge.fury.io/js/bundle-declarations-webpack-plugin.svg)
+# bundle-declarations-webpack-plugin 
+![NPM version](https://badge.fury.io/js/bundle-declarations-webpack-plugin.svg) 
+[![release](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/release.yml)
+[![build](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml)
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-100%25-success?style=flat)
+
+
 ## Example usage
 Here are some example usages.
 
