@@ -1,5 +1,7 @@
-name: master
-on: [push]
+name: Run tests
+
+on: [push, pull_request]
+
 jobs:
   test:
     name: Run tests
@@ -16,18 +18,3 @@ jobs:
           badge: true
           format: 'markdown'
           output: 'both'
-
-  publish:
-    name: Publish package
-    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@v3
-      with:
-        registry-url: 'https://registry.npmjs.org'
-    - run: npm ci
-    - run: npm publish
-      continue-on-error: true
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
