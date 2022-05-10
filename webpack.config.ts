@@ -39,20 +39,15 @@ export default <webpack.Configuration>{
             }
         ]
     },
+    externalsPresets: { node: true },
     externals: {
-        lodash: {
-            commonjs: 'lodash',
-            commonjs2: 'lodash',
-            amd: 'lodash',
-            root: '_',
-        },
         webpack: "webpack",
         "dts-bundle-generator": "dts-bundle-generator",
     },
     plugins: [
         new BundleDeclarationsWebpackPlugin({
             entry: "./src/index.ts",
-            outFile: "index.d.ts"
+            outFile: "index.d.ts",
         }),
     ],
     optimization: {

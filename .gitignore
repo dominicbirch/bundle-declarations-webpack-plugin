@@ -6,3 +6,5 @@ coverage/
 *.tgz
 yarn.lock
 .eslintcache
+junit.xml
+test-results.json

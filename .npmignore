@@ -8,4 +8,7 @@ src/
 .npmignore
 coverage/
 .eslintcache
+.eslintrc.*
 .github/
+junit.xml
+test-results.json

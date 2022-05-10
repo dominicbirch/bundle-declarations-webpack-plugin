@@ -1,6 +1,6 @@
 {
   "name": "bundle-declarations-webpack-plugin",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle-generator/",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
@@ -30,8 +30,7 @@
     "combine declarations"
   ],
   "dependencies": {
-    "dts-bundle-generator": "^6.7.0",
-    "jest-junit": "^13.2.0"
+    "dts-bundle-generator": "^6.7.0"
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",
@@ -39,6 +38,7 @@
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.15.0",
     "eslint-config-xo": "^0.40.0",
+    "jest-junit": "^13.2.0",
     "pre-commit": "^1.2.2",
     "ts-jest": "^28.0.2",
     "ts-loader": "^9.2.5",
@@ -49,7 +49,6 @@
     "webpack-cli": "^4.8.0"
   },
   "peerDependencies": {
-    "lodash": "^4.17.21",
     "webpack": "^5.0.0"
   }
 }
