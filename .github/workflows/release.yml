@@ -2,13 +2,13 @@ name: Release
 
 on:
   release:
-    types: [created]
+    types: [created, edited]
   push:
     branches:
       - main
 
 jobs:
-  publish-npm:
+  publish:
     runs-on: ubuntu-latest
     environment: Production
     steps:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           registry-url: https://registry.npmjs.org/
-          check-latest: true
+          node-version: 16
       - run: npm ci
       - run: npm publish
         env:
