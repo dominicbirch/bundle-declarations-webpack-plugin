@@ -16,6 +16,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           registry-url: https://registry.npmjs.org/
+          check-latest: true
       - run: npm ci
       - run: npm publish
         env:
