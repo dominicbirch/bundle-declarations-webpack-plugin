@@ -1,4 +1,4 @@
-/** @type {import('eslint').ESLint.Options} */
+/** @type {import('eslint').ESLint.ConfigData} */
 module.exports = {
 	env: {
 		browser: false,
