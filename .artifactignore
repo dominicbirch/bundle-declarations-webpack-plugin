@@ -6,5 +6,7 @@ src/
 /*.tgz
 .artifactignore
 .npmignore
+.gitignore
 .eslintcache
+.eslintrc.*
 .github/
