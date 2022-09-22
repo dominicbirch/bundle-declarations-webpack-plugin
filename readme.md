@@ -15,7 +15,7 @@ import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin"
 import { resolve } from "path";
 import type { Configuration } from "webpack";
 
-export default <Configuration>{
+export default <Configuration> {
     entry: "./src/main.ts",
     output: {
         filename: "index.js",
@@ -35,9 +35,10 @@ Just to be clear, currently the output filename is defaulted to this value, but 
 Usually you will want to include all types which are visible on the surface of a library, but the `entry` and `outFile` may not necessarily match with your webpack bundle. 
 ```typescript
 import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin";
+import type { Configuration } from "webpack";
 
-{
-   plugins: [
+export default <Configuration> {
+    plugins: [
         `...`,
         new BundleDeclarationsWebpackPlugin({
             entry: ["./src/index.ts", "./src/globals.ts"],
@@ -51,8 +52,9 @@ In the above example, the exports of `index.ts` and `globals.ts` are combined in
 ### When you need control of `dts-bundle-generator`
 ```typescript
 import BundleDeclarationsWebpackPlugin from "bundle-declarations-webpack-plugin";
+import type { Configuration } from "webpack";
 
-{
+export default <Configuration> {
     plugins: [
         `...`,
         new BundleDeclarationsWebpackPlugin({
