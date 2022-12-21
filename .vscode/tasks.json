@@ -1,0 +1,46 @@
+{
+	"version": "2.0.0",
+	"inputs": [],
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "watch",
+			"label": "parcel:watch",
+			"detail": "parcel watch",
+			"isBackground": true,
+			"problemMatcher": [
+				{
+					"owner": "npm",
+					"pattern": [
+						{
+							"regexp": "^.*?@parcel\\S+?:\\s*(.*)$",
+							"message": 1,
+							
+						},
+						{
+							"regexp": "^.*?(\\S+?):(\\d+):(\\d+)$",
+							"file": 1,
+							"line": 2,
+							"column": 3,
+							"loop": true,
+						},
+					],
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": "(.*?)",
+						"endsPattern": "(^.*?Buil(t\\sin\\s\\d+|d\\sfailed))"
+					}
+				}
+			],
+			"presentation": {
+				"echo": true,
+				"focus": true,
+				"clear": true,
+				"close": true,
+				"panel": "dedicated",
+				"reveal": "always",
+				"revealProblems": "onProblem",
+			},
+		}
+	]
+}

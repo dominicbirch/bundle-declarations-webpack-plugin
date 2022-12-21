@@ -7,4 +7,5 @@
         "*.js": "$(capture).*",
         "*.json": "$(capture)*.json",
     },
+    "typescript.tsdk": "./node_modules/typescript/lib"
 }
