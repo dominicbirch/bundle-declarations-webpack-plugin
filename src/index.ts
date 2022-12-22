@@ -124,7 +124,6 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
             }
         }
 
-
         return Array.from(entries);
     }
     private getEntriesFromConfig(entry: Options["entry"]): EntryPointConfig[] | undefined {
@@ -155,8 +154,8 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
 
 export type { CompilationOptions, EntryPointConfig } from "dts-bundle-generator";
 export * from "./options";
-export * from "./generator";
 export {
-    BundleDeclarationsWebpackPlugin as default
+    BundleDeclarationsWebpackPlugin as default,
+    compile,
 };
 
