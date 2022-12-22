@@ -4,7 +4,7 @@
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle-generator/",
   "scripts": {
     "test": "export NODE_OPTIONS=--experimental-vm-modules;jest",
-    "prepack": "rm -rf ./dist/ && parcel build --no-source-maps --no-autoinstall",
+    "prepack": "rm -rf ./dist/ && npx parcel build --no-source-maps --no-autoinstall",
     "watch": "npx parcel watch --no-autoinstall",
     "lint": "eslint . --fix --cache"
   },
@@ -47,15 +47,16 @@
     "dts-bundle-generator": "^7.1.0"
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.8.2",
-    "@parcel/transformer-typescript-types": "^2.8.2",
+    "@parcel/packager-ts": "latest",
+    "@parcel/transformer-typescript-types": "latest",
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.17",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
-    "eslint": "^8.15.0",
-    "eslint-config-xo": "^0.40.0",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "eslint": "^8.30.0",
+    "eslint-config-xo": "^0.43.1",
     "jest-junit": "^15.0.0",
+    "parcel": "latest",
     "pre-commit": "^1.2.2",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.2",
