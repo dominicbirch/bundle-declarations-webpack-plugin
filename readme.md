@@ -1,7 +1,7 @@
 # bundle-declarations-webpack-plugin 
 ![NPM version](https://badge.fury.io/js/bundle-declarations-webpack-plugin.svg) 
 [![release](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/release.yml)
-[![build](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml)
+[![tests](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml/badge.svg)](https://github.com/dominicbirch/bundle-declarations-webpack-plugin/actions/workflows/test.yml)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 ## Example usage
 ### Simplest scenario
