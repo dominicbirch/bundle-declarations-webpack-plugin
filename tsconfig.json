@@ -1,24 +1,31 @@
 {
     "include": [
-        "src/**/*.*"
+        "./src/**/*.ts",
+    ],
+    "exclude": [
+        "**/node_modules/**",
     ],
     "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "moduleResolution": "Node",
+        "baseUrl": "./src/",
+        "rootDir": "./src/",
+        "outDir": "./lib/",
         "lib": [
             "DOM",
             "DOM.Iterable",
             "ES5",
             "ES6",
-            "ESNext"
+            "ESNext",
+            "ES2020",
         ],
-        "baseUrl": "./src/",
-        "rootDir": "./src/",
-        "outDir": "./lib/",
-        "jsx": "react",
         "strict": true,
         "noImplicitAny": true,
         "noImplicitThis": true,
-        "moduleResolution": "Node",
         "isolatedModules": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "allowJs": true,
+        "resolveJsonModule": true,
     }
 }

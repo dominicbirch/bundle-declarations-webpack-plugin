@@ -1,38 +1,52 @@
-import { resolve } from "path";
-import sinon from "ts-sinon";
-import { webpack, EnvironmentPlugin } from "webpack";
-import BundleDeclarationsWebpackPlugin, { Options } from ".";
+import { resolve } from "node:path";
+import { existsSync, rmSync } from "node:fs";
+import type { Options } from "./options";
+import webpack from "webpack";
+import BundleDeclarationsWebpackPlugin, { PLUGIN_NAME } from ".";
+import PluginOutput from "../dist";
+import { jest } from "@jest/globals";
 
 
 describe(BundleDeclarationsWebpackPlugin.name, () => {
-    beforeEach(sinon.restore);
-
     jest.setTimeout(30000);
+    afterAll(() => {
+        const outputPath = new URL("../test", import.meta.url);
+        if (existsSync(outputPath)) {
+            rmSync(outputPath, {
+                recursive: true,
+                force: true,
+            });
+        }
+    });
 
-    const getCompiler = () => webpack({
+    const getCompiler = ({ watch, cb, plugins }: { watch?: boolean, plugins?: webpack.Configuration["plugins"], cb?: (err?: Error, stats?: webpack.Stats) => void } = { watch: false }) => webpack({
+        watch,
         entry: "./src/index.ts",
         target: "node",
         mode: "production",
         devtool: false,
         plugins: [
-            new EnvironmentPlugin(),
+            ...plugins ?? [],
             c => c.hooks.shouldEmit.tap("SuppressEmit", () => false),
         ],
+        output: {
+            path: resolve("./test"),
+            pathinfo: false,
+            publicPath: "/",
+        },
         externalsPresets: { node: true },
         externals: {
-            lodash: {
-                commonjs: 'lodash',
-                commonjs2: 'lodash',
-                amd: 'lodash',
-                root: '_',
-            },
             webpack: "webpack",
             "dts-bundle-generator": "dts-bundle-generator",
+        },
+        resolve: {
+            modules: ["node_modules"],
+            extensions: [".ts", ".js", ".json", ".mjs", ".cjs"],
         },
         module: {
             rules: [
                 {
-                    test: /\.[tj]s$/i,
+                    test: /\.ts$/i,
                     include: resolve("./src"),
                     exclude: /\.test\.[tj]s$/i,
                     use: {
@@ -50,8 +64,9 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
             concatenateModules: false,
             removeEmptyChunks: false,
             mergeDuplicateChunks: false,
+            usedExports: true,
         }
-    });
+    }, cb);
 
 
     it("attempts webpack entry when plugin entry is omitted", done => {
@@ -60,9 +75,8 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                 outFile: "index.d.ts",
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
-            compiler = getCompiler();
+            compiler = getCompiler({ plugins: [subject] });
 
-        subject.apply(compiler);
         compiler.run((error, stats) => {
             try {
                 expect(stats?.hasErrors()).toBeFalsy();
@@ -81,9 +95,8 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                 outFile: "test.d.ts",
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
-            compiler = getCompiler();
+            compiler = getCompiler({ plugins: [subject] });
 
-        subject.apply(compiler);
         compiler.run((error, stats) => {
             try {
                 expect(stats?.hasErrors()).toBeFalsy();
@@ -102,9 +115,8 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                 outFile: "main.d.ts",
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
-            compiler = getCompiler();
+            compiler = getCompiler({ plugins: [subject] });
 
-        subject.apply(compiler);
         compiler.run((error, stats) => {
             try {
                 expect(stats?.hasErrors()).toBeFalsy();
@@ -127,9 +139,8 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                 outFile: "main.d.ts",
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
-            compiler = getCompiler();
+            compiler = getCompiler({ plugins: [subject] });
 
-        subject.apply(compiler);
         compiler.run((error, stats) => {
             try {
                 expect(stats?.hasErrors()).toBeFalsy();
@@ -155,9 +166,8 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                 outFile: "multi.d.ts",
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
-            compiler = getCompiler();
+            compiler = getCompiler({ plugins: [subject] });
 
-        subject.apply(compiler);
         compiler.run((error, stats) => {
             try {
                 expect(stats?.hasErrors()).toBeFalsy();
@@ -170,33 +180,60 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
         });
     });
     it("logs a warning and continues if .d.ts bundling fails", done => {
-        import("dts-bundle-generator").then(generator => {
-            const
-                options = <Options>{
-                    removeRelativeReExport: false,
-                    entry: "index.ts",
-                    outFile: "failing.d.ts"
-                }, subject = new BundleDeclarationsWebpackPlugin(options), compiler = getCompiler();
-            sinon
-                .stub(generator, "generateDtsBundle")
-                .throwsException();
+        const
+            options = <Options>{
+                removeRelativeReExport: false,
+                entry: "_failme_!.ts",
+                outFile: "#failing.d.ts"
+            }, subject = new BundleDeclarationsWebpackPlugin(options),
+            compiler = getCompiler({ plugins: [subject] });
 
-            subject.apply(compiler);
-            compiler.run((error, stats) => {
-                try {
-                    expect(stats?.hasErrors()).toBeFalsy();
-                    expect(
-                        stats?.compilation.logging
-                            .get(BundleDeclarationsWebpackPlugin.name)
-                            ?.some(l => l.type === "warn")
-                    ).toBeTruthy();
-                    expect(stats?.compilation.assets[options.outFile]).toBeFalsy();
+        compiler.run((error, stats) => {
+            if(error){
+                return done(error);
+            }
+            try {
+                const logs = stats?.compilation.logging.get(PLUGIN_NAME);
+                expect(stats?.hasErrors()).toBeFalsy();
+                expect(stats?.compilation.assets[options.outFile]).toBeFalsy();
+                expect(logs?.some(l => l.type === "warn")).toBeTruthy();
+                done();
+            } catch (e) {
+                done(e);
+            }
+        });
+    });
+    it("runs in a background thread in webpack watch mode", done => {
+        const
+            options = <Options>{
+                outFile: "main.d.ts",
+            },
+            //TODO: jest cant seem to resolve the worker as a module from the .ts version
+            subject = new PluginOutput(options)
+                .on("updated", () => {
+                    try {
+                        expect(existsSync(resolve(compiler.outputPath, options.outFile))).toBe(true);
+                        compiler.close(done);
+                    } catch (e) {
+                        done(e);
+                    }
+                })
+                .on("error", e => done(e)),
+            compiler = getCompiler({
+                watch: true,
+                plugins: [subject],
+                cb: (err, stats) => {
+                    if (err) {
+                        return done(err);
+                    }
 
-                    done(error);
-                } catch (e) {
-                    done(e);
+                    try {
+                        expect(stats?.hasErrors()).toBeFalsy();
+                        expect(stats?.compilation.assets[options.outFile]).toBeFalsy();
+                    } catch (e) {
+                        done(e);
+                    }
                 }
             });
-        });
     });
 });

@@ -7,17 +7,10 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug webpack build",
-            "presentation": {
-                "hidden": false,
-                "group": "Debug",
-                "order": 1
-            },
-            "timeout": 60000,
+            "name": "Debug",
             "sourceMaps": true,
             "autoAttachChildProcesses": true,
             "stopOnEntry": false,
-            "disableOptimisticBPs": true,
             "skipFiles": [
                 "<node_internals>/**"
             ],
@@ -26,11 +19,29 @@
                 "NODE_ENV": "production",
                 "mode": "production"
             },
-            "runtimeExecutable": "yarn",
+            "runtimeExecutable": "webpack",
             "runtimeArgs": [
-                "run",
-                "prepack"
-            ]
+                "--watch",
+            ],
+            "preLaunchTask": "parcel:watch"
         },
-    ]
+        {
+            "name": "Test",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "sourceMaps": true,
+            "autoAttachChildProcesses": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "node",
+            "runtimeArgs": ["--experimental-vm-modules"],
+            "program": "${workspaceFolder}/node_modules/jest-cli/bin/jest.js",
+            "args": ["--watchAll"],
+            "console": "integratedTerminal",
+            "preLaunchTask": "parcel:watch"
+        }
+    ],
+    "compounds": []
 }
