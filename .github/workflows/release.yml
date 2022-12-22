@@ -10,10 +10,14 @@ jobs:
     environment: Production
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: .parcel-cache
+          key: ${{ runner.os }}-node${{ matrix.node }}-parcel
       - uses: actions/setup-node@v3
         with:
           registry-url: https://registry.npmjs.org/
-          node-version: 16
+          node-version: 18
           cache: npm
       - run: npm ci
       - run: npm publish
