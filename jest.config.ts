@@ -11,7 +11,6 @@ export default <JestConfigWithTsJest>{
 		"clover",
 		"lcov",
 	],
-	rootDir: "./src",
 	moduleDirectories: ['node_modules', 'src'],
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.[tj]s$': '$1',
