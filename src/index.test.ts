@@ -8,7 +8,7 @@ import { jest } from "@jest/globals";
 
 
 describe(BundleDeclarationsWebpackPlugin.name, () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
     afterAll(() => {
         const outputPath = new URL("../test", import.meta.url);
         if (existsSync(outputPath)) {
