@@ -7,7 +7,12 @@ const
     relativeReExport = /^export\s+\*.*?\bfrom\s+"[\.~\/].*$/gmi,
     emptyLines = /^\s*?[\r\n]+/gmi;
 
-export async function compile(entries: EntryPointConfig[], { compilationOptions, removeEmptyExports, removeEmptyLines, removeRelativeReExport }: Omit<Options, "entry">) {
+/** Generate the bundle content based on the options provided.
+ * @param entries The typescript entrypoint details.
+ * @param options The remaining configuration to be used.
+ * @returns A buffer of the .d.ts file content.
+ */
+export function compile(entries: EntryPointConfig[], { compilationOptions, removeEmptyExports, removeEmptyLines, removeRelativeReExport }: Omit<Options, "entry" | "outFile">) {
     return new Promise<Buffer>((resolve, reject) => {
         try {
             const raw = generateDtsBundle(entries, compilationOptions)

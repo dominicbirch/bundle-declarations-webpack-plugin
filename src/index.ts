@@ -23,7 +23,7 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
      * @param options The optional configuration to be used by the instance.
      */
     constructor(options?: Partial<Options>) {
-        super();
+        super({ captureRejections: true });
         this._options = options
             ? {
                 ...DefaultOptions,
@@ -43,7 +43,6 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
 
         if (watch) {
             let worker: Worker;
-
             compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation, _params) => {
                 //TODO: seems to always return false, this might be the timing (tried here and while processing assets)
                 // if (!compiler.hooks.shouldEmit.call(compilation)) {
@@ -59,31 +58,31 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
                         },
                         stderr: true,
                         stdout: true,
-                    });
-                    worker.on("message", (data: any) => {
-                        this.emit("compiled", data);
-                        const path = resolve(compiler.outputPath, outFile);
-                        const dir = dirname(path);
+                    })
+                        .on("message", (data: any) => {
+                            this.emit("compiled", data);
+                            const path = resolve(compiler.outputPath, outFile);
+                            const dir = dirname(path);
 
-                        if (!existsSync(dir)) {
-                            mkdirSync(dir, {
-                                recursive: true,
-                            });
-                        }
-                        compiler.outputFileSystem.writeFile(path, Buffer.from(data), e => {
-                            if (e) {
-                                this.emit("error", e);
-                            } else {
-                                this.emit("updated");
+                            if (!existsSync(dir)) {
+                                mkdirSync(dir, {
+                                    recursive: true,
+                                });
                             }
-                        });
-                    });
-                    worker.on("error", e => this.emit("error", e));
-                    worker.on("exit", exitCode => {
-                        if (exitCode !== 0) {
-                            this.emit("error", new Error(`Background generator exited with code ${exitCode}`));
-                        }
-                    });
+                            compiler.outputFileSystem.writeFile(path, Buffer.from(data), e => {
+                                if (e) {
+                                    this.emit("error", e);
+                                } else {
+                                    this.emit("updated");
+                                }
+                            });
+                        })
+                        .on("error", e => this.emit("error", e));
+                        // .on("exit", exitCode => {
+                        //     if (exitCode !== 0) {
+                        //         this.emit("error", new Error(`Background generator exited with code ${exitCode}`));
+                        //     }
+                        // });
                 });
             });
 
@@ -98,18 +97,14 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
 
                         logger.log("Creating .d.ts bundle", entries);
 
-                        const buffer = await compile(entries, this._options);
-
-                        this.emit("compiled", buffer);
                         compilation.emitAsset(
                             outFile,
-                            new RawSource(buffer),
+                            new RawSource(await compile(entries, this._options)),
                         );
-                        
+
                         logger.log(".d.ts bundle created", outFile);
                     } catch (err) {
                         logger.warn("Failed to create .d.ts", err);
-                        this.emit("error", err);
                     }
                 });
             });
@@ -160,6 +155,7 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
 
 export type { CompilationOptions, EntryPointConfig } from "dts-bundle-generator";
 export * from "./options";
+export * from "./generator";
 export {
     BundleDeclarationsWebpackPlugin as default
 };

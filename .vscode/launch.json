@@ -21,7 +21,7 @@
             },
             "runtimeExecutable": "webpack",
             "runtimeArgs": [
-                // "--watch",
+                "--watch",
             ],
             "preLaunchTask": "parcel:watch"
         },
@@ -40,7 +40,7 @@
             "program": "${workspaceFolder}/node_modules/jest-cli/bin/jest.js",
             "args": ["--watchAll"],
             "console": "integratedTerminal",
-            // "preLaunchTask": "parcel:watch"
+            "preLaunchTask": "parcel:watch"
         }
     ],
     "compounds": []

@@ -190,13 +190,14 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
 
         compiler.run((error, stats) => {
             if(error){
-                done(error);
+                return done(error);
             }
             try {
                 const logs = stats?.compilation.logging.get(PLUGIN_NAME);
                 expect(stats?.hasErrors()).toBeFalsy();
                 expect(stats?.compilation.assets[options.outFile]).toBeFalsy();
                 expect(logs?.some(l => l.type === "warn")).toBeTruthy();
+                done();
             } catch (e) {
                 done(e);
             }

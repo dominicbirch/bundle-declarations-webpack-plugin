@@ -50,7 +50,7 @@ export default {
 		new BundleDeclarationsWebpackPlugin({
 			entry: './src/index.ts',
 			outFile: './dts/index.d.ts',
-		}),
+		}).on("updated", () => console.info("Declarations updated.")),
 		c => c.hooks.shouldEmit.tap('SuppressEmit', () => false),
 	],
 	optimization: {
