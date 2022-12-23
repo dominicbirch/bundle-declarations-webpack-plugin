@@ -16,3 +16,4 @@ junit.xml
 test-results.json
 .parcel-cache/
 webpack.config.*
+parcel-hack.js
