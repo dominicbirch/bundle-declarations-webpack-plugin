@@ -1,10 +1,10 @@
 {
   "name": "bundle-declarations-webpack-plugin",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle-generator/",
   "scripts": {
     "test": "export NODE_OPTIONS=--experimental-vm-modules;jest",
-    "prepack": "rm -rf ./dist/ && npx parcel build --no-source-maps --no-autoinstall",
+    "prepack": "rm -rf ./dist/ && npx parcel build --no-source-maps --no-autoinstall && node parcel-hack.js",
     "watch": "npx parcel watch --no-autoinstall",
     "lint": "eslint . --fix --cache"
   },
