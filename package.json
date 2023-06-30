@@ -44,7 +44,7 @@
     "combine declarations"
   ],
   "dependencies": {
-    "dts-bundle-generator": "^7.1.0"
+    "dts-bundle-generator": "^7.2.0"
   },
   "devDependencies": {
     "@parcel/packager-ts": "latest",
