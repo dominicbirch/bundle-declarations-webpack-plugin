@@ -1,6 +1,6 @@
 import { EntryPointConfig, generateDtsBundle } from "dts-bundle-generator";
 import { EOL } from "node:os";
-import type { Options } from "options";
+import type { Options } from "./options";
 
 const
     emptyExports = /^export\s+{\s*};?\s*$/gmi,
