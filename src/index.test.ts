@@ -2,8 +2,8 @@ import { resolve } from "node:path";
 import { existsSync, rmSync } from "node:fs";
 import type { Options } from "./options";
 import webpack from "webpack";
-import BundleDeclarationsWebpackPlugin, { PLUGIN_NAME } from "./index";
-import PluginOutput from "../dist/index";
+import BundleDeclarationsWebpackPlugin, { PLUGIN_NAME } from ".";
+import PluginOutput from "../dist";
 import { jest } from "@jest/globals";
 
 
