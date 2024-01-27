@@ -1,6 +1,6 @@
 {
   "name": "bundle-declarations-webpack-plugin",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Webpack plugin which wraps https://www.npmjs.com/package/dts-bundle-generator/",
   "scripts": {
     "test": "export NODE_OPTIONS=--experimental-vm-modules;jest",
@@ -44,7 +44,7 @@
     "combine declarations"
   ],
   "dependencies": {
-    "dts-bundle-generator": "^9.0.0"
+    "dts-bundle-generator": "^9.1.0"
   },
   "devDependencies": {
     "@parcel/packager-ts": "^2.10.3",
