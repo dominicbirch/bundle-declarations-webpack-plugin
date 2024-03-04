@@ -16,14 +16,14 @@ export function compile(entries: EntryPointConfig[], { compilationOptions, remov
     return new Promise<Buffer>((resolve, reject) => {
         try {
             const raw = generateDtsBundle(entries, compilationOptions)
-                .flatMap(x => x.split(EOL));
+                .flatMap(x => x.split("\n").map(y => y.trimEnd()));
             const dts = raw
                 .filter(l =>
                     !(removeEmptyLines && emptyLines.test(l))
                     && !(removeEmptyExports && emptyExports.test(l))
                     && !(removeRelativeReExport && relativeReExport.test(l))
                 )
-                .join(EOL);
+                .join("\n");
 
             resolve(Buffer.from(dts));
         } catch (err) {
