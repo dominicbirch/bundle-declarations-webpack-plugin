@@ -8,11 +8,16 @@ type WorkerData = {
     options: Options;
 };
 
-const {
-    entries,
-    options,
-}: WorkerData = workerData;
+try {
+    const {
+        entries,
+        options,
+    }: WorkerData = workerData;
 
-compile(entries, options).then(buffer => {
+    const buffer = await compile(entries, options)
     parentPort?.postMessage(buffer);
-});
+} catch (error) {
+    console.error(error);
+
+    throw error;
+}

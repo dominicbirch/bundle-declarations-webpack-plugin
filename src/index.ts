@@ -37,11 +37,11 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
         const
             { webpack: { sources, Compilation }, options: { watch } } = compiler,
             { RawSource } = sources,
-            { entry, outFile } = this._options;
+            { entry, outFile, blockingWatch } = this._options;
 
         let entries = this.getEntriesFromConfig(entry);
 
-        if (watch) {
+        if (watch && !blockingWatch) {
             let worker: Worker;
             compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation, _params) => {
                 //TODO: seems to always return false, this might be the timing (tried here and while processing assets)
@@ -77,12 +77,12 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
                                 }
                             });
                         })
-                        .on("error", e => this.emit("error", e));
-                        // .on("exit", exitCode => {
-                        //     if (exitCode !== 0) {
-                        //         this.emit("error", new Error(`Background generator exited with code ${exitCode}`));
-                        //     }
-                        // });
+                        .on("error", e => this.emit("error", e))
+                        .on("exit", exitCode => {
+                            if (exitCode !== 0) {
+                                this.emit("error", new Error(`Background generator exited with code ${exitCode}`));
+                            }
+                        });
                 });
             });
 

@@ -20,6 +20,8 @@ import type { EntryPointConfig, CompilationOptions } from "dts-bundle-generator"
     /**Remove `export * from "./somemodule"` relative re-exporting; this was added to work around a bug in `dts-bundle-generator` 
      * whereby re-exporting would lead to both the relative and qualified paths being included. */
     removeRelativeReExport?: boolean;
+    /**Override `.d.ts` bundling to run as part of the webpack compilation process in webpack's watch mode (slower but no false positives)  */
+    blockingWatch?: boolean;
 }
 
 /**Provides the default plugin options if omitted or partially omitted.*/
