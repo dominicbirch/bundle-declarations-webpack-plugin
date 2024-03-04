@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 16, "20.10.0", "latest"  ]
+        node: [ "20.11.1", "latest"  ]
     name: Run tests on Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@master
