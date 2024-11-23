@@ -34,3 +34,4 @@ jobs:
           badge: true
           format: 'markdown'
           output: 'both'
+      - run: cat coverage-summary.md >> $GITHUB_STEP_SUMMARY
