@@ -19,7 +19,7 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
         }
     });
 
-    const getCompiler = ({ watch, cb, plugins }: { watch?: boolean, plugins?: webpack.Configuration["plugins"], cb?: (err?: Error, stats?: webpack.Stats) => void } = { watch: false }) => webpack({
+    const getCompiler = ({ watch, cb, plugins }: { watch?: boolean, plugins?: webpack.Configuration["plugins"], cb?: (err: Error | null, stats?: webpack.Stats) => void } = { watch: false }) => webpack({
         watch,
         entry: "./src/index.ts",
         target: "node",
@@ -54,6 +54,7 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
                         options: {
                             onlyCompileBundledFiles: true,
                             transpileOnly: true,
+                            compiler: "typescript",
                         },
                     },
                 }
@@ -73,6 +74,10 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
         const
             options = <Options>{
                 outFile: "index.d.ts",
+                compilationOptions: {
+                    preferredConfigPath: "./tsconfig.json",
+                    followSymlinks: false,
+                }
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
             compiler = getCompiler({ plugins: [subject] });
@@ -93,6 +98,10 @@ describe(BundleDeclarationsWebpackPlugin.name, () => {
             options = <Options>{
                 entry: "./src/index.ts",
                 outFile: "test.d.ts",
+                compilationOptions: {
+                    preferredConfigPath: "./tsconfig.json",
+                    followSymlinks: false,
+                }
             },
             subject = new BundleDeclarationsWebpackPlugin(options),
             compiler = getCompiler({ plugins: [subject] });

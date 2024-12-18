@@ -4,18 +4,24 @@ import EventEmitter from "node:events";
 import { existsSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { Worker } from "node:worker_threads";
-import { Compilation, Compiler, WebpackPluginInstance } from "webpack";
+import { Compilation, Compiler, NormalModule, WebpackPluginInstance } from "webpack";
 import { compile } from "./generator";
 import { DefaultEntryOptions, DefaultOptions, Options } from "./options";
 
 
 export const PLUGIN_NAME = "BundleDeclarationsWebpackPlugin";
 
+export type PluginEventMap = {
+    compiled: [data: Buffer];
+    error: [err: Error];
+    updated: [];
+}
+
 /**Creates a bundled d.ts file from the entry point provided after webpack emits output.
  * @class
  * @implements {WebpackPluginInstance}
  */
-export class BundleDeclarationsWebpackPlugin extends EventEmitter implements WebpackPluginInstance {
+export class BundleDeclarationsWebpackPlugin extends EventEmitter<PluginEventMap> implements WebpackPluginInstance {
     /**The plugin options with defaults applied.*/
     protected readonly _options: Options;
 
@@ -49,7 +55,7 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
                 //     return; // No reason to generate .d.ts if there should be no output
                 // }
                 compilation.hooks.processAssets.tapPromise({ name: PLUGIN_NAME, stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL }, async _assets => {
-                    entries ??= this.getDefaultEntries(compilation.entrypoints);
+                    entries ??= this.getDefaultEntries(compilation);
 
                     worker = new Worker(new URL("./worker", import.meta.url), {
                         workerData: {
@@ -69,7 +75,7 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
                                     recursive: true,
                                 });
                             }
-                            compiler.outputFileSystem.writeFile(path, Buffer.from(data), e => {
+                            compiler.outputFileSystem?.writeFile(path, Buffer.from(data), e => {
                                 if (e) {
                                     this.emit("error", e);
                                 } else {
@@ -93,7 +99,7 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
                     const logger = compilation.getLogger(PLUGIN_NAME);
 
                     try {
-                        entries ??= this.getDefaultEntries(compilation.entrypoints);
+                        entries ??= this.getDefaultEntries(compilation);
 
                         logger.log("Creating .d.ts bundle", entries);
 
@@ -111,19 +117,22 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
         }
     }
 
-    private getDefaultEntries(entry: Compilation["entrypoints"]): EntryPointConfig[] {
+    private getDefaultEntries(compilation: Compilation): EntryPointConfig[] {
         const entries = new Set<EntryPointConfig>();
-        for (const [_, v] of entry) {
-            for (const o of v.origins) {
-                if (o.request?.endsWith(".ts")) {
-                    entries.add({
-                        ...DefaultEntryOptions,
-                        filePath: o.request,
-                    });
+        for (const entrypoint of compilation.entrypoints.values()) {
+            for (const chunk of entrypoint.chunks) {
+                const modules = compilation.chunkGraph.getChunkModulesIterable(chunk);
+                for (const module of modules) {
+                    const { resource } = module as NormalModule;
+                    if (resource && resource.endsWith(".ts")) {
+                        entries.add({
+                            ...DefaultEntryOptions,
+                            filePath: resource,
+                        });
+                    }
                 }
             }
         }
-
         return Array.from(entries);
     }
     private getEntriesFromConfig(entry: Options["entry"]): EntryPointConfig[] | undefined {
@@ -155,7 +164,6 @@ export class BundleDeclarationsWebpackPlugin extends EventEmitter implements Web
 export type { CompilationOptions, EntryPointConfig } from "dts-bundle-generator";
 export * from "./options";
 export {
-    BundleDeclarationsWebpackPlugin as default,
     compile,
 };
-
+export default BundleDeclarationsWebpackPlugin;

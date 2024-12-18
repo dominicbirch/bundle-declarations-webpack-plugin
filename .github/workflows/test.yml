@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ "20.11.1", "latest"  ]
+        node: 
+          - latest
+          - lts/*
     name: Run tests on Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: .parcel-cache
           key: ${{ runner.os }}-node${{ matrix.node }}-parcel
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: npm
@@ -28,10 +30,10 @@ jobs:
           NODE_ENV: production
       - run: npm test -- --ci --coverage --json --outputFile=test-results.json --testResultsProcessor="jest-junit"
       - name: Code Coverage Summary Report
-        uses: irongut/CodeCoverageSummary@v1.2.0
+        uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: coverage/cobertura-coverage.xml
           badge: true
           format: 'markdown'
           output: 'both'
-      - run: cat coverage-summary.md >> $GITHUB_STEP_SUMMARY
+      - run: if [ -f coverage-summary.md ]; then cat coverage-summary.md >> $GITHUB_STEP_SUMMARY; fi
