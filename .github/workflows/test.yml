@@ -28,7 +28,7 @@ jobs:
       - run: npx parcel build --no-source-maps --no-autoinstall
         env: 
           NODE_ENV: production
-      - run: npm test -- --ci --coverage --json --reporters jest-md-dashboard --outputFile=test-results.json --testResultsProcessor="jest-junit"
+      - run: npm test -- --ci --coverage --json --outputFile=test-results.json --testResultsProcessor="jest-junit"
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
@@ -36,4 +36,4 @@ jobs:
           badge: true
           format: 'markdown'
           output: 'both'
-      - run: cat coverage-summary.md >> $GITHUB_STEP_SUMMARY
+      - run: if [ -f coverage-summary.md ]; then cat coverage-summary.md >> $GITHUB_STEP_SUMMARY; fi
