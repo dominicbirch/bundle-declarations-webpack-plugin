@@ -28,7 +28,10 @@ import type { EntryPointConfig, CompilationOptions } from "dts-bundle-generator"
 export const DefaultOptions: Options = {
     outFile: "index.d.ts",
     removeEmptyLines: true,
-    removeEmptyExports: true
+    removeEmptyExports: true,
+    compilationOptions: {
+        preferredConfigPath: "./tsconfig.json",
+    },
 };
 
 /**Provides the default entry point config for entries which have no overrides provided. */
